@@ -19,26 +19,25 @@ class CitasController extends Controller
     public function store(Request $request)
     {
          $datos = $request->validate([
-        'nombre_paciente' => 'required|string|max:255',
-        'nombre_doctor' => 'required|string|max:255',
-        'motivo_consulta' => 'required|string|max:255',
-        'estados_cita' => 'sometimes|required|in:Pendiente,Realizada,Cancelada',
-        'fecha' => 'required|date',
-        'tiempo' => 'required|date_format:H:i:s',
+            'nombre_paciente' => 'required|string|max:255',
+            'nombre_doctor'   => 'required|string|max:255',
+            'motivo_consulta' => 'required|string|max:255',
+            'estados_cita'    => 'sometimes|required|in:Pendiente,Realizada,Cancelada',
+            'fecha'           => 'required|date',
+            'tiempo'          => 'required|date_format:H:i:s',
 
-    ]);
+        ]);
         $cita = citas::create($datos);
-
-             return response()->json($cita, 201);
+        return response()->json($cita, 201);
 
     }
 
     /**
      * Cristian
      */
-    public function show(string $id)
+    public function show(citas $cita)
     {
-        //
+        return $cita;
     }
 
     /**
@@ -50,7 +49,7 @@ class CitasController extends Controller
             'nombre_paciente' => 'required|string|max:255',
             'nombre_doctor'   => 'required|string|max:255',
             'motivo_consulta' => 'required|string|max:255',
-            'estados_cita'    => 'required|in:Pendiente,Realizada,Cancelada',
+            'estados_cita'    => 'sometimes|required|in:Pendiente,Realizada,Cancelada',
             'fecha'           => 'required|date',
             'tiempo'          => 'required|date_format:H:i:s',
         ]);
