@@ -4,19 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\citas;
+
 
 class CitasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return citas::all();
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Cristian
      */
     public function store(Request $request)
     {
@@ -24,7 +23,7 @@ class CitasController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Cristian
      */
     public function show(string $id)
     {
@@ -32,18 +31,31 @@ class CitasController extends Controller
     }
 
     /**
-     * Kata
+     * Kata ♡
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, citas $cita)
     {
-        //
+        $datos = $request->validate([
+            'nombre_paciente' => 'required|string|max:255',
+            'nombre_doctor'   => 'required|string|max:255',
+            'motivo_consulta' => 'required|string|max:255',
+            'estados_cita'    => 'required|in:Pendiente,Realizada,Cancelada',
+            'fecha'           => 'required|date',
+            'tiempo'          => 'required|date_format:H:i:s',
+        ]);
+
+        $cita->update($datos);
+        $cita->refresh();
+        return response()->json($cita, 200);
     }
 
+
     /**
-     * Kata
+     * Kata ♡
      */
-    public function destroy(string $id)
+    public function destroy(citas $cita)
     {
-        //
+        $cita -> delete();
+        return response()->json(['message' => 'Cita Eliminada Exitosamente ✅']);
     }
 }
