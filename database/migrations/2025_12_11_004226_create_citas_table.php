@@ -24,7 +24,7 @@ return new class extends Migration
 
             // Estado de la cita con valores específicos permitidos
             $table->enum('estados_cita',['Pendiente','Realizada','Cancelada']);
-
+            $table->enum('consultorio',['C101', 'C102', 'C103', 'C104','C105']);
             // Fecha y hora de la cita
             $table->date('fecha');
             $table->time('tiempo');

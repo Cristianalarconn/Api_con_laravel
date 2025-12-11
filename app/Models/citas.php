@@ -17,6 +17,7 @@ class citas extends Model
         'nombre_doctor',
         'motivo_consulta',
         'estados_cita',
+        'consultorio',
         'fecha',
         'tiempo',
     ];

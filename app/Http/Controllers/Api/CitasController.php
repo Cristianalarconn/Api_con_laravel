@@ -31,6 +31,7 @@ class CitasController extends Controller
             'nombre_doctor'   => 'required|string|max:255',
             'motivo_consulta' => 'required|string|max:255',
             'estados_cita'    => 'sometimes|required|in:Pendiente,Realizada,Cancelada',
+            'consultorio'     => 'sometimes|required|in:C101,C102,C103,C104,C105',
             'fecha'           => 'required|date',
             'tiempo'          => 'required|date_format:H:i:s',
 
@@ -75,6 +76,7 @@ class CitasController extends Controller
                 'nombre_doctor'   => 'required|string|max:255',
                 'motivo_consulta' => 'required|string|max:255',
                 'estados_cita'    => 'sometimes|required|in:Pendiente,Realizada,Cancelada',
+                'consultorio'     => 'sometimes|required|in:C101,C102,C103,C104,C105',
                 'fecha'           => 'required|date',
                 'tiempo'          => 'required|date_format:H:i:s',
             ]);
