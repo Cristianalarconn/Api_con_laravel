@@ -59,31 +59,68 @@ class CitasController extends Controller
      */
     public function update(Request $request, citas $cita)
     {
-        // Validación de los datos enviados
-        $datos = $request->validate([
-            'nombre_paciente' => 'required|string|max:255',
-            'nombre_doctor'   => 'required|string|max:255',
-            'motivo_consulta' => 'required|string|max:255',
-            'estados_cita'    => 'sometimes|required|in:Pendiente,Realizada,Cancelada',
-            'fecha'           => 'required|date',
-            'tiempo'          => 'required|date_format:H:i:s',
-        ]);
+        try {
+            // Validación de los datos enviados
+            $datos = $request->validate([
+                'nombre_paciente' => 'required|string|max:255',
+                'nombre_doctor'   => 'required|string|max:255',
+                'motivo_consulta' => 'required|string|max:255',
+                'estados_cita'    => 'sometimes|required|in:Pendiente,Realizada,Cancelada',
+                'fecha'           => 'required|date',
+                'tiempo'          => 'required|date_format:H:i:s',
+            ]);
 
-        // Actualización de la cita
-        $cita->update($datos);
-        // Se refrescan los datos por si hubo cambios automáticos
-        $cita->refresh();
-        return response()->json($cita, 200);
+            // Actualiza la cita
+            $cita->update($datos);
+            $cita->refresh();
+
+            // Respuesta exitosa
+            return response()->json([
+                'mensaje' => 'Cita actualizada correctamente ✅',
+                'data'    => $cita
+            ], 200);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+
+            // Errores de validación — HTTP 422
+            return response()->json([
+                'error'   => 'Datos inválidos 🚫',
+                'detalle' => $e->errors()
+            ], 422);
+        }
     }
-
 
     /**
      * Kata ♡
      * Elimina una cita del sistema.
      */
-    public function destroy(citas $cita)
+    public function destroy($id)
     {
-        $cita -> delete();
-        return response()->json(['message' => 'Cita Eliminada Exitosamente ✅']);
+        try {
+            // Buscar la cita manualmente
+            $cita = citas::findOrFail($id);
+
+            // Si se encuentra, se elimina
+            $cita->delete();
+
+            return response()->json([
+                'mensaje' => 'Cita eliminada exitosamente ✅'
+            ], 200);
+
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+
+            return response()->json([
+                'mensaje' => 'La cita no fue encontrada 👀'
+            ], 404);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'mensaje'   => 'Ocurrió un error al eliminar la cita 🤔',
+                'detalle' => $e->getMessage()
+            ], 500);
+        }
     }
+
+
 }
