@@ -32,7 +32,7 @@ class CitasController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Kata
      */
     public function update(Request $request, string $id)
     {
@@ -40,7 +40,7 @@ class CitasController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Kata
      */
     public function destroy(string $id)
     {
