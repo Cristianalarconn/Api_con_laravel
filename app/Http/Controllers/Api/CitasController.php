@@ -25,6 +25,7 @@ class CitasController extends Controller
     public function store(Request $request)
     {
         // Validación de los datos que llegan desde el cliente
+        try{
          $datos = $request->validate([
             'nombre_paciente' => 'required|string|max:255',
             'nombre_doctor'   => 'required|string|max:255',
@@ -41,6 +42,14 @@ class CitasController extends Controller
         // Se retorna la cita creada con código 201 (creado)
         return response()->json($cita, 201);
 
+        } catch (\Illuminate\Validation\ValidationException $e) {
+
+            // Errores de validación — HTTP 422
+            return response()->json([
+                'error'   => 'Datos incorrectos o vacios',
+                'detalle' => $e->errors()
+            ], 422);
+        }
     }
 
     /**
